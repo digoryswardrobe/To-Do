@@ -272,21 +272,21 @@ function renderGarden(ws,t){
   let full=0, svg='';
   for(let i=0;i<7;i++){
     const k=addDays(ws,i), b=bloomOf(k), x=25+i*50;
-    if(b.wrote&&b.hours&&b.words) full++;
+    if(b.wrote||b.hours||b.words) full++; if(b.hours) full++; if(b.words) full++;
     svg+=flower(x,ground,b,k>t);
     svg+='<text x="'+x+'" y="140" text-anchor="middle" font-family="Caveat, cursive" font-size="17" font-weight="600" fill="'+(k===t?'var(--ink)':'var(--ink-soft)')+'">'+LET[i]+'</text>';
   }
   let extras='';
-  if(full>=4){
+  if(full>=12){
     let rays='';for(let i=0;i<12;i++){const a=i*Math.PI/6;rays+='<line x1="'+(318+Math.cos(a)*17).toFixed(1)+'" y1="'+(26+Math.sin(a)*17).toFixed(1)+'" x2="'+(318+Math.cos(a)*24).toFixed(1)+'" y2="'+(26+Math.sin(a)*24).toFixed(1)+'" stroke="#D99A00" stroke-width="2" stroke-linecap="round"/>';}
     extras+='<g>'+rays+'<circle cx="318" cy="26" r="13" fill="#F2B705"/></g>';
   }
-  if(full>=3){
+  if(full>=9){
     extras+='<path d="M60 40 C95 10 130 52 165 28 S225 18 238 30" fill="none" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="2 4"/>'+
       '<g transform="translate(250 30)"><ellipse cx="-3" cy="-7" rx="5" ry="7" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1" transform="rotate(-25 -3 -7)"/><ellipse cx="4" cy="-7" rx="5" ry="7" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1" transform="rotate(25 4 -7)"/>'+
       '<ellipse cx="0" cy="0" rx="10" ry="7" fill="#F2B705" stroke="#2f2618" stroke-width="1"/><path d="M-3 -6.5 V6.5 M3 -6 V6" stroke="#2f2618" stroke-width="2.4"/><circle cx="10" cy="0" r="3.5" fill="#2f2618"/></g>';
   }
-  $('garden').innerHTML='<svg viewBox="0 0 '+W+' 150" role="img" aria-label="'+full+' full-bloom days this week">'+extras+svg+'</svg>';
+  $('garden').innerHTML='<svg viewBox="0 0 '+W+' 150" role="img" aria-label="'+full+' of 21 garden points this week, bee at 9, sun at 12">'+extras+svg+'</svg>';
 }
 
 /* ---------- sheets ---------- */
