@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Garden">
+<meta name="apple-mobile-web-app-title" content="To Do">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f2ead7">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
-<title>Writer's Garden</title>
+<title>To Do</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Literata:ital,wght@0,400;0,500;1,400&display=swap">
@@ -101,7 +101,7 @@ h1{font-family:var(--hand);font-weight:600;font-size:40px;line-height:1;margin:2
 
 <div class="page">
   <header>
-    <div class="brand">Writer's Garden</div>
+    <div class="brand">To Do</div>
     <h1 id="day-name">Today</h1>
     <div class="sub" id="week-label"></div>
   </header>
@@ -220,12 +220,12 @@ function render(){
   const d=fromKey(selected);
   $('day-name').textContent=DOW[(d.getDay()+6)%7]+(selected===t?'':'');
   const m=fromKey(ws);
-  $('week-label').textContent=(selected===t?'today · ':'')+MONTHS[d.getMonth()]+' '+d.getDate()+' · week of '+MONTHS[m.getMonth()]+' '+m.getDate();
+  $('week-label').textContent=MONTHS[d.getMonth()]+' '+d.getDate();
 
   let tabs='';
   for(let i=0;i<7;i++){
     const k=addDays(ws,i), dd=fromKey(k);
-    tabs+='<button type="button" class="tab'+(k===selected?' on':'')+(k===t?' today':'')+'" data-day="'+k+'" aria-pressed="'+(k===selected)+'" aria-label="'+DOW[i]+' '+MONTHS[dd.getMonth()]+' '+dd.getDate()+'"><span class="l">'+LET[i]+'</span><span class="n">'+dd.getDate()+'</span></button>';
+    tabs+='<button type="button" class="tab'+(k===selected?' on':'')+(k===t?' today':'')+'" data-day="'+k+'" aria-pressed="'+(k===selected)+'" aria-label="'+DOW[i]+' '+MONTHS[dd.getMonth()]+' '+dd.getDate()+'"><span class="l">'+LET[i]+'</span></button>';
   }
   $('tabs').innerHTML=tabs;
 
@@ -400,7 +400,7 @@ loaded=true;
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
 $('backup-btn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(state,null,1)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='writers-garden-'+todayKey()+'.json';
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='to-do-backup-'+todayKey()+'.json';
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
   toast('Backup saved');
 });
@@ -408,7 +408,7 @@ $('restore-file').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||typeof d.tasks!=='object')throw 0;state=normalize(d);selected=todayKey();commit();toast('Backup restored');}
-    catch(err){toast("That file isn't a Writer's Garden backup");}};
+    catch(err){toast("That file isn't a To Do backup");}};
   r.readAsText(f); e.target.value='';
 });
 })();
